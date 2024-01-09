@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed;
 
     public float sprintSpeed;
+    public float wallRunSpeed;
 
 
     public float groundDrag;
@@ -50,9 +51,9 @@ public class PlayerMovement : MonoBehaviour
     public MovementState State;
     public enum MovementState
     {
-        Walking, Sprinting, Air, Crouching
+        Walking, Sprinting,WallRunning, Air, Crouching
     }
-
+    public bool WallRunning;
 
     private void Start()
     {
@@ -138,6 +139,11 @@ public class PlayerMovement : MonoBehaviour
         {
             State = MovementState.Crouching;
             moveSpeed = crouchSpeed;
+        }
+        if (WallRunning)
+        {
+            State = MovementState.WallRunning;
+            moveSpeed = wallRunSpeed;
         }
     }
 
