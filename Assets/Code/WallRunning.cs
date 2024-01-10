@@ -11,12 +11,17 @@ public class WallRunning : MonoBehaviour
     public float wallRunForce;
     public float maxWallRunTime;
     public float maxWallRunTimer;
-
+    public float wallJumpUpForce;
+    public float wallJumpSideForce;
 
     [Header("Input")]
-
+    public KeyCode jumpKey = KeyCode.Space;
     private float horizontalInput;
     private float verticalInput;
+    // exiting wall
+    private bool exitingWall;
+    public float exitingWallTime;
+    public float exitingWallTimer;
 
     [Header("Detection")]
 
@@ -71,11 +76,27 @@ public class WallRunning : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         //WallRunning
-        if ((wallLeft || wallRight) && verticalInput > 0 && AboveGround())
+        if ((wallLeft || wallRight) && verticalInput > 0 && AboveGround() && !exitingWall)
         {
             if (!pm.WallRunning)
                 StartWallRun();
+
+            //wall jumping
+            if (Input.GetKeyDown(jumpKey)) WallJump();
+
         }
+        else if (exitingWall)
+        {
+            if (pm.WallRunning)
+                StopWallRun();
+
+            if (exitingWallTimer > 0)
+                exitingWallTimer -= Time.deltaTime;
+
+            if (exitingWallTimer <= 0)
+                exitingWall = false;
+        }
+
         else
         {
             if (pm.WallRunning)
@@ -101,10 +122,26 @@ public class WallRunning : MonoBehaviour
 
         //adding forward force
         rb.AddForce(wallforward * wallRunForce, ForceMode.Force);
+
+        // pushing into the wall
+        if (!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0))
+        rb.AddForce(-wallforward * 100, ForceMode.Force);
     }
     private void StopWallRun()
     {
         pm.WallRunning = false;
         rb.useGravity = true;
+    }
+    private void WallJump()
+    {
+        exitingWall = true;
+        exitingWallTimer = exitingWallTime;
+
+        Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
+
+        Vector3 forcetoApply = transform.up * wallJumpUpForce + wallNormal * wallJumpSideForce;
+        // reset y velocity and Adding force
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.AddForce(forcetoApply, ForceMode.Impulse);
     }
 }
