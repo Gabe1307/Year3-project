@@ -8,13 +8,35 @@ public class GunShooting : MonoBehaviour
     public float range = 100f;
     public float fireRate = 15f;
     public ParticleSystem muzzleFlash;
+
+    public int maxAmmo = 10;
+    private int currentAmmo;
+    public float reloadTime = 1f;
+    private bool isReloading = false;
     
     public Camera fpsCam;
 
     public float nextTimeToFire = 0f;
-    
+
+    private void Start()
+    {
+        currentAmmo = maxAmmo;
+    }
+
+
+    private void OnEnable()
+    {
+        isReloading = false;
+    }
     void Update()
     {
+        if (isReloading)
+            return;
+        if (currentAmmo < -0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
         if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
@@ -22,9 +44,24 @@ public class GunShooting : MonoBehaviour
         }
     }
 
+
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        Debug.Log("Reloading");
+
+        yield return new WaitForSeconds(reloadTime);
+        currentAmmo = maxAmmo;
+        isReloading = false;
+    }
     void Shoot()
     {
+
+        
+
+
         muzzleFlash.Play();
+        currentAmmo--;
 
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit))
