@@ -39,6 +39,10 @@ public class WallRunning : MonoBehaviour
     private PlayerMovement pm;
     private Rigidbody rb;
 
+    [Header("Camera Tilt")]
+    public float tilt;
+    public float camTilt;
+    public float camTiltTime;
 
     private void Start()
     {
@@ -126,6 +130,12 @@ public class WallRunning : MonoBehaviour
         // pushing into the wall
         if (!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0))
         rb.AddForce(-wallforward * 100, ForceMode.Force);
+
+        // camera tilt
+        if (wallLeft)
+            tilt = Mathf.Lerp(tilt, -camTilt, camTiltTime * Time.deltaTime);
+        else if (wallRight)
+            tilt = Mathf.Lerp(tilt, camTilt, camTiltTime * Time.deltaTime);
     }
     private void StopWallRun()
     {
