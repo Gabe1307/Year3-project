@@ -11,17 +11,17 @@ public class WeaponSway : MonoBehaviour
     private void Update()
     {
         // Mouse Input 
-        float mouseX = Input.GetAxisRaw("Mouse ") * multiplier;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * multiplier;
+       // float mouseX = Input.GetAxisRaw("Mouse ") * multiplier;
+// float mouseY = Input.GetAxisRaw("Mouse Y") * multiplier;
 
         // Traget rotataion
-        Quaternion rotationX = Quaternion.AngleAxis(-mouseY, Vector3.right);
-        Quaternion rotationY = Quaternion.AngleAxis(mouseX, Vector3.up);
+      //  Quaternion rotationX = Quaternion.AngleAxis(-mouseY, Vector3.right);
+       // Quaternion rotationY = Quaternion.AngleAxis(mouseX, Vector3.up);
 
 
-        Quaternion targetRotation = rotationX * rotationY;
+       // Quaternion targetRotation = rotationX * rotationY;
 
         // rotation
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, smooth * Time.deltaTime);
+       // transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, smooth * Time.deltaTime);
     }
 }
