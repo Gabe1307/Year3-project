@@ -16,6 +16,6 @@ public class NavMesh : MonoBehaviour
  
     void Update()
     {
-        enemy.SetDestination(player.position);
+    //    enemy.SetDestination(player.position);
     }
 }
