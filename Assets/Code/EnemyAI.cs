@@ -66,7 +66,7 @@ public class EnemyAI : MonoBehaviour
 
         if (distanceToTarget <= chaseRange)
         {
-            nMA.SetDestination(playerTarget.transform.position);
+            nMA.SetDestination(playerTarget.position);
         }
     }
 

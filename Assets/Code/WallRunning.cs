@@ -8,6 +8,9 @@ public class WallRunning : MonoBehaviour
     public LayerMask whatIsWall;
     public LayerMask whatIsGround;
 
+  
+
+
     public float wallRunForce;
     public float maxWallRunTime;
     public float maxWallRunTimer;
@@ -39,10 +42,18 @@ public class WallRunning : MonoBehaviour
     private PlayerMovement pm;
     private Rigidbody rb;
 
-    [Header("Camera Tilt")]
-    public float tilt;
-    public float camTilt;
-    public float camTiltTime;
+    [Header("Camera")]
+    [SerializeField] private Camera Cam;
+    [SerializeField] private float fov;
+    [SerializeField] private float wallRunfov;
+    [SerializeField] private float wallRunFovTime;
+
+    [SerializeField] private float camTilt;
+    [SerializeField] private float camTiltTime;
+    public float tilt { get; private set; }
+
+
+
 
     private void Start()
     {
@@ -112,10 +123,19 @@ public class WallRunning : MonoBehaviour
     private void StartWallRun()
     {
         pm.WallRunning = true;
+
+        //tilt
+       //Cam.fieldOfView = Mathf.Lerp(Cam.fieldOfView, wallRunfov, wallRunFovTime * Time.deltaTime);
+
+
+        
     }
     private void WallRunningMovement()
     {
         rb.useGravity = false;
+
+        //Cam.fieldOfView = Mathf.Lerp(Cam.fieldOfView, wallRunfov, wallRunFovTime * Time.deltaTime);
+
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
 
@@ -131,21 +151,24 @@ public class WallRunning : MonoBehaviour
         if (!(wallLeft && horizontalInput > 0) && !(wallRight && horizontalInput < 0))
         rb.AddForce(-wallforward * 100, ForceMode.Force);
 
-        // camera tilt
-        if (wallLeft)
-            tilt = Mathf.Lerp(tilt, -camTilt, camTiltTime * Time.deltaTime);
-        else if (wallRight)
-            tilt = Mathf.Lerp(tilt, camTilt, camTiltTime * Time.deltaTime);
+        
     }
     private void StopWallRun()
     {
         pm.WallRunning = false;
         rb.useGravity = true;
+
+        //Cam.fieldOfView = Mathf.Lerp(Cam.fieldOfView, fov, wallRunFovTime * Time.deltaTime);
+
+
+
     }
     private void WallJump()
     {
         exitingWall = true;
         exitingWallTimer = exitingWallTime;
+
+        
 
         Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
 
@@ -153,5 +176,6 @@ public class WallRunning : MonoBehaviour
         // reset y velocity and Adding force
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(forcetoApply, ForceMode.Impulse);
+      
     }
 }
