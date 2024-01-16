@@ -56,6 +56,10 @@ public class EnemyAI : MonoBehaviour
         if (isAggro)
         {
             EngageTarget();
+            if(distanceToTarget > chaseRange)
+            {
+                isAggro = false;
+            }
         }
 
         else if (distanceToTarget <= chaseRange)
@@ -64,10 +68,7 @@ public class EnemyAI : MonoBehaviour
             isAggro = true;
         }
 
-        if (distanceToTarget <= chaseRange)
-        {
-            nMA.SetDestination(playerTarget.position);
-        }
+       
     }
 
     private void EngageTarget()
@@ -89,14 +90,13 @@ public class EnemyAI : MonoBehaviour
     private void ChasePlayer()
     {
         print("Chasing");
-        anim.SetTrigger("isMoving");
         nMA.SetDestination(playerTarget.position);
     }
 
     private void AttackPlayer()
     {
         print("Attacking");
-        anim.SetBool("isAttacking", true);
+      
     }
     public void OnDamageTaken()
     {
