@@ -41,6 +41,7 @@ public class WallRunning : MonoBehaviour
     public Transform orientation;
     private PlayerMovement pm;
     private Rigidbody rb;
+    public PlayerCamera cam;
 
     [Header("Camera")]
     [SerializeField] private Camera Cam;
@@ -124,17 +125,20 @@ public class WallRunning : MonoBehaviour
     {
         pm.WallRunning = true;
 
-        //tilt
-       //Cam.fieldOfView = Mathf.Lerp(Cam.fieldOfView, wallRunfov, wallRunFovTime * Time.deltaTime);
 
-
+        // apply cam orientation effects
+        cam.DoFov(90f);
+        if (wallLeft) cam.DoTilt(-5f);
+        if (wallRight) cam.DoTilt(5f);
         
     }
+
+
     private void WallRunningMovement()
     {
         rb.useGravity = false;
 
-        //Cam.fieldOfView = Mathf.Lerp(Cam.fieldOfView, wallRunfov, wallRunFovTime * Time.deltaTime);
+       
 
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         Vector3 wallNormal = wallRight ? rightWallhit.normal : leftWallhit.normal;
@@ -158,7 +162,8 @@ public class WallRunning : MonoBehaviour
         pm.WallRunning = false;
         rb.useGravity = true;
 
-        //Cam.fieldOfView = Mathf.Lerp(Cam.fieldOfView, fov, wallRunFovTime * Time.deltaTime);
+       cam.DoFov(80f);
+       cam.DoTilt(0f);
 
 
 
