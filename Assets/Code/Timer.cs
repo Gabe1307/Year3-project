@@ -20,7 +20,7 @@ public class Timer : MonoBehaviour
         {
             remainingTime = 0;
             timertext.color = Color.red;
-            Application.Quit();
+            Application.LoadLevel(Application.loadedLevel);
         }
         int minutes = Mathf.FloorToInt(remainingTime / 60);
         int seconds = Mathf.FloorToInt(remainingTime % 60);
