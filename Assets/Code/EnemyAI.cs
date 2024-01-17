@@ -17,9 +17,14 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField] float turnSpeed = 5f;
 
-    [SerializeField] float enemyHP = 100f;
+    //[SerializeField] float enemyHP = 100f;
 
-    
+
+    //attack player
+    [SerializeField] float damage = 20f;
+    [SerializeField] PlayerHealth target;
+
+
 
 
 
@@ -83,6 +88,7 @@ public class EnemyAI : MonoBehaviour
         else if (distanceToTarget <= nMA.stoppingDistance)
         {
             AttackPlayer();
+
         }
 
     }
@@ -96,7 +102,10 @@ public class EnemyAI : MonoBehaviour
     private void AttackPlayer()
     {
         print("Attacking");
-      
+
+        target.TakeDamage(damage);
+        Application.LoadLevel(Application.loadedLevel);
+
     }
     public void OnDamageTaken()
     {
