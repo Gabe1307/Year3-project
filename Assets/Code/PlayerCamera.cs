@@ -38,7 +38,7 @@ public class PlayerCamera : MonoBehaviour
     }
     public void DoFov(float endValue)
     {
-       // GetComponent<Camera>().DOFieldOfView(endValue, 0.25f);
+        GetComponent<Camera>().DOFieldOfView(endValue, 0.25f);
     }
     public void DoTilt(float zTilt)
     {
